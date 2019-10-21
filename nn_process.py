@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.utils import to_categorical
 
 # Read the sonar dataset
 input_data = pd.read_csv('data/sonar.csv', header=None)
@@ -31,6 +32,7 @@ plt.tight_layout()
 # we just have to encode the classes of type string to integer then split the dataset (80%/20%)
 y = input_data['label'].copy()
 y = LabelEncoder().fit_transform(y)
+y = to_categorical(y)
 
 X_df = input_data.copy()
 X_df.drop(['label'], inplace=True, axis=1)
@@ -48,3 +50,8 @@ def build_baseline_model_60_1_layer_3_hidden_units(input_dim):
 
 
 model = build_baseline_model_60_1_layer_3_hidden_units(60)
+model.fit(X_train, y_train, epochs=250, batch_size=32)
+
+# evaluate the keras model
+_, accuracy = model.evaluate(X_test, y_test)
+print('Accuracy: %.2f' % (accuracy*100))
