@@ -40,18 +40,33 @@ X_df.drop(['label'], inplace=True, axis=1)
 X_train, X_test, y_train, y_test = train_test_split(X_df.values, y, test_size=0.2, shuffle=True, random_state=42)
 
 
+def plot_history(histories, key='categorical_crossentropy'):
+    plt.figure(figsize=(16,10))
+
+    for name, history in histories:
+        val = plt.plot(history.epoch, history.history['val_'+key], '--', label=name.title()+' Val')
+        plt.plot(history.epoch, history.history[key], color=val[0].get_color(),
+             label=name.title()+' Train')
+
+    plt.xlabel('Epochs')
+    plt.ylabel(key.replace('_',' ').title())
+    plt.legend()
+
+    plt.xlim([0, max(history.epoch)])
+    plt.show()
+
+
 def build_baseline_model_60_1_layer_3_hidden_units(input_dim):
     model = Sequential()
     model.add(Dense(input_dim, input_dim=input_dim, activation='sigmoid'))
     model.add(Dense(3, activation='sigmoid'))
     model.add(Dense(2, activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', 'categorical_crossentropy'])
     return model
 
 
 model = build_baseline_model_60_1_layer_3_hidden_units(60)
-model.fit(X_train, y_train, epochs=250, batch_size=32)
+model.summary()
+model_history = model.fit(X_train, y_train, epochs=250, batch_size=32, validation_data=(X_test, y_test), verbose=1)
 
-# evaluate the keras model
-_, accuracy = model.evaluate(X_test, y_test)
-print('Accuracy: %.2f' % (accuracy*100))
+plot_history([('l2', model_history)])
