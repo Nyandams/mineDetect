@@ -21,3 +21,11 @@ model = Sequential()
 **Trainable params:** 3,851
 
 **Non-trainable params:** 0
+
+Train on 166 samples and validate on 42 samples.
+
+**Training:**
++ 250 epochs
++ batch of 32
+
+![alt text](/res/training.png "Training")
