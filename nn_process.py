@@ -9,14 +9,13 @@ from keras.utils import to_categorical
 # Read the sonar dataset
 input_data = pd.read_csv('data/sonar.csv', header=None)
 input_data.rename(columns={60: 'label'}, inplace=True)
-input_data.rename(columns={60: 'label'}, inplace=True)
 print(input_data.head(2))
 
 input_data.plot.box(figsize=(12, 7), xticks=[])
 plt.title('Boxplots of all frequency bins')
 plt.xlabel('Frequency bin')
 plt.ylabel('Power spectral density (normalized)')
-# plt.show()
+plt.savefig('res/boxplot_frequency.png')
 
 plt.figure(figsize=(8, 5))
 plt.plot(input_data[input_data['label'] == 'R'].values[0][:-1], label='Rock', color='black')
@@ -26,7 +25,7 @@ plt.title('Example of both classes')
 plt.xlabel('Frequency bin')
 plt.ylabel('Power spectral density (normalized)')
 plt.tight_layout()
-# plt.show()
+plt.savefig('res/psd')
 
 # dataset already normalized
 # we just have to encode the classes of type string to integer then split the dataset (80%/20%)
@@ -49,11 +48,11 @@ def plot_history(histories, key='categorical_crossentropy'):
              label=name.title()+' Train')
 
     plt.xlabel('Epochs')
-    plt.ylabel(key.replace('_',' ').title())
+    plt.ylabel(key.replace('_', ' ').title())
     plt.legend()
 
     plt.xlim([0, max(history.epoch)])
-    plt.show()
+    plt.savefig('res/training.png')
 
 
 def build_baseline_model_60_1_layer_3_hidden_units(input_dim):
