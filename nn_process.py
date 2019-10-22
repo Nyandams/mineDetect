@@ -70,3 +70,7 @@ model.summary()
 model_history = model.fit(X_train, y_train, epochs=250, batch_size=32, validation_data=(X_test, y_test), verbose=1)
 
 plot_history([('l2', model_history)])
+
+score = model.evaluate(X_test, y_test, verbose=0)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
