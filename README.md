@@ -36,6 +36,9 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 model.fit(X_train, y_train, epochs=250, batch_size=32, validation_data=(X_test, y_test), verbose=1)
 ```
 
+Adding a 3rd layer in addition to the input and output layer increase a little more the accuracy of the model and as the
+dataset in really small, it doesn't take that much time to process.
+
 |  Layer (type)  |  Output Shape  |  Param #  |
 |----------------|----------------|-----------|
 |dense_1 (Dense) |(None, 60)      |3660       |
